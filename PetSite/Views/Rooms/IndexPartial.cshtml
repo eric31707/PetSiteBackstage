@@ -1,0 +1,32 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model List<PetSite.Models.RoomVM>
+
+@{
+    int count = 0;
+    @foreach (var room in Model)
+    {
+        count++;
+        <tr>
+            <td>@count</td>
+            <td>@room.Type</td>
+            <td>@room.Name</td>
+            <td>@room.Price</td>
+            <td>@room.Address</td>
+            <td>
+                @foreach (var n in room.fileName)
+                {
+                    <img src="~/RoomImages/@n" style="width:100px;height:70px;">
+                    <input value="@n" type="checkbox" id="@n" class="roompics @room.RoomId">
+                }
+            </td>
+            <td><button class="btn btn-outline-danger btn-sm" id="@room.RoomId" onclick="myFunction(@room.RoomId)">刪除圖片</button></td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@room.RoomId" class="btn btn-info">修改</a>
+                <a asp-action="Delete" asp-route-id="@room.RoomId" class="btn btn-danger">刪除</a>
+            </td>
+
+        </tr>
+    }
+}

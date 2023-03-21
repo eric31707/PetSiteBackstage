@@ -1,0 +1,105 @@
+﻿@model PetSite.Models.RoomVM
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1 class="my-3">修改房型</h1>
+
+<hr />
+<a asp-action="Index" class="btn btn-secondary">返回列表</a>
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="RoomId" />
+            <div class="form-group my-2">
+                <label asp-for="Type" class="control-label">風格</label>
+                <span asp-validation-for="Type" class="text-danger"></span>
+                <select class="form-select" aria-label="Default select example" asp-for="Type">
+                    <option selected value="歐洲風">歐洲風</option>
+                    <option value="日式風">日式風</option>
+                    <option value="美式風">美式風</option>
+                    <option value="義式風">義式風</option>
+                    <option value="中國風">中國風</option>
+                    <option value="最炫民族風">最炫民族風</option>
+                </select>
+            </div>
+            <div class="form-group my-2">
+                <label asp-for="Name" class="control-label">名稱</label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group my-2">
+                <label asp-for="Price" class="control-label">價格</label>
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group my-2">
+                <label asp-for="Address" class="control-label">地址</label>
+                <input asp-for="Address" class="form-control" />
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+            <div class="form-group my-2">
+                <label asp-for="Photo" class="control-label">照片</label>
+
+                <div class="d-inline-flex">
+                    @foreach (var n in Model.fileName)
+                    {
+                        <img src="~/RoomImages/@n" class="mx-2" style="width:200px;height:100px;">
+                    }
+                </div>
+            </div>
+           <div>             
+                <input asp-for="Photo" type="file" id="progressbarTWInput" accept="image/gif, image/jpeg, image/png" name="Photo" class="formfile form-control" multiple />
+                
+               <span asp-validation-for="Photo" class="text-danger"></span>
+                <input type="submit" value="保存" class="btn btn-primary float-end"/>               
+           </div>
+        </form>       
+    </div>
+</div>
+<div id="preview_progressbarTW_imgs" class="previewimg" style="width:100%; height: 300px; overflow:scroll;">
+    <p>目前沒有上傳新的圖片</p>
+</div>
+
+@section Styles
+{
+    <style>
+        .previewimg img
+        {
+            margin-left: 20px;
+            margin-bottom: 20px;
+        }
+    </style>
+}
+
+
+@section Scripts {
+    <script>
+        $("#progressbarTWInput").change(function () {    
+            $("#preview_progressbarTW_imgs").html(""); // 清除預覽
+            readURL(this);
+        });
+
+        function readURL(input) {
+            if (input.files && input.files.length >= 0) {
+                for (var i = 0; i < input.files.length; i++) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        var img = $("<img width='300' height='200' >").attr('src', e.target.result);
+                        $("#preview_progressbarTW_imgs").append(img);
+                    }
+                    reader.readAsDataURL(input.files[i]);
+                }
+            } else {
+                var noPictures = $("<p>目前沒有圖片</p>");
+                $("#preview_progressbarTW_imgs").append(noPictures);
+            }
+        }  
+    </script>
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+
+    }
+}

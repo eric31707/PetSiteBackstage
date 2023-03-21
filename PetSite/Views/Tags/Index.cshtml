@@ -1,0 +1,150 @@
+﻿@section Styles
+	{
+
+	<link href="~/lib/datatables/css/jquery.datatables.min.css" rel="stylesheet" />
+	<style>
+		thead {
+			background-color: darkslateblue;
+			color: white;
+		}
+	</style>
+}
+<p></p>
+<table class="table table-hover table-striped m-3 p-2 dt-responsive">
+	<thead class="m-3">
+		<tr>
+			<td>標籤ID</td>
+			<td>標籤</td>
+			<td>帳號數量</td>
+			<td>操作</td>			
+		</tr>
+	</thead>
+
+</table>
+
+<input type="button" class="btn btn-primary btn-lg" onclick="CreateData()" value="新增" /> 
+
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">標籤內容</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div id="Members"></div>
+      </div>
+			<div class="modal-footer">
+			<button type="button" class="btn btn-primary" onclick="Email()">Email</button>
+			<button type="button" class="btn btn-primary" onclick="Account()">帳號</button>
+			<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+
+@section Scripts
+	{
+	<script src="~/lib/datatables/js/jquery.datatables.min.js"></script>
+	<script src="https://cdn.datatables.net/fixedheader/3.3.1/js/dataTables.fixedHeader.min.js"></script>
+	<script>
+		var emailList = "";
+		var accountList = "";
+		function DelData(data) {
+			location.href = "/Tags/Delete/" + data;
+		}
+		function EditData(data) {
+			location.href = "/Tags/Edit/" + data;
+		}
+		function CreateData() {
+			location.href = "/Tags/Create" ;
+		}
+		
+		function GetMember(Id){
+		$.ajax({
+				type: "POST",
+				url: "@Url.Action("MemberInTag","MemberTags")",
+				data:{"Id":Id}
+			}).done(function (Data) {
+				let account = "";
+				let email = "";
+				for( var key in Data){
+					account = account + Data[key]["account"] + "  " + Data[key]["name"]  +"<br>";
+					email = email + Data[key]['email'] + ",";
+				}
+				emailList=email;
+				accountList = account;
+				document.getElementById("Members").innerHTML=account;
+				
+			}).fail(function (err) {
+					alert(err.statusText);
+				})
+		}
+		function Email(){
+			document.getElementById("Members").innerHTML = emailList;
+		}
+		function Account() {
+			document.getElementById("Members").innerHTML = accountList;
+		}
+		function EditMember(data)
+		{
+		location.href = "/MemberTags/EditMemberInTag/" + data;
+		}
+
+
+
+
+		$(document).ready(function () {
+			$("table").dataTable({
+				ajax: {
+					type: "POST",
+					url: "/Tags/Tags/Json",
+					dataSrc: function (json) {
+						return json;
+					}
+				},
+				columns: [
+					{ "data": "tagId", "width": "20%" },
+					{ "data": "tagName", "width": "30%" },
+					{ "data": "count", "width": "20%" },
+					
+					{
+						//這裡的data變數值為sysid，相等於row.sysid
+						data: "tagId",//資料行繫結屬性
+						"width": "25%",
+						orderable: false, // 禁用排序
+						render: function (data, type, row, meta) {
+							//row為後端回傳的資料列物件、data變數相等於row.sysid，row可以抓到哪些資料行取決於後端的回傳
+							return "<input type='button' class='btn btn-primary btn-sm mb-1' onclick='EditData(" + data + ")'  value='編輯標籤' /> "
+								+ "<input type='button' class='btn btn-primary btn-sm mb-1' onclick='EditMember(" + data + ")'  value='編輯帳號' />"
+								+"<button type='button' class='btn btn-primary btn-sm mb-1 ms-1'onclick='GetMember(" + data + ")' data-bs-toggle='modal' data-bs-target='#staticBackdrop'>內容</button>"
+								+ "<input type='button' class='btn btn-primary btn-sm mb-1 ms-1' onclick='DelData(" + data + ")'  value='刪除' />"
+							;
+
+						}
+					}
+
+				],
+				"columnDefs": [
+					{
+						targets: [3],responsivePriority:1,
+						width: "30%",
+					},
+					{
+						targets: [1], responsivePriority: 2,
+						width: "30%",
+					},
+				],
+				fixedHeader: {
+					header: true
+				},
+				language: {
+					url: "https://cdn.datatables.net/plug-ins/1.13.1/i18n/zh-HANT.json"
+				}
+			});
+		})
+	</script>
+}

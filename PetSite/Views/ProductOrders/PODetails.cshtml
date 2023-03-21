@@ -1,0 +1,210 @@
+﻿@model PetSite.Models.ViewModels.PODetailsVM
+@{
+    ViewData["Title"] = "PODetails";
+    var OrderStatus = ViewBag.orderStatus as IEnumerable<SelectListItem>;
+    //OrderStatus=OrderStatus.Prepend(new SelectListItem { Text = "-----請選擇-----", Value = "" });
+    var PaymentStatus = ViewBag.paymentStatus as IEnumerable<SelectListItem>;
+    //PaymentStatus=PaymentStatus.Prepend(new SelectListItem { Text = "-----請選擇-----", Value = "" });
+    var ShipmentStatus = ViewBag.shipmentStatus as IEnumerable<SelectListItem>;
+    //ShipmentStatus=ShipmentStatus.Prepend(new SelectListItem { Text = "-----請選擇-----", Value = "" });
+
+}
+
+<style>
+    @@media print {
+        body * {
+            visibility: hidden;
+        }
+
+        .print-container, .print-container * {
+            visibility: visible;
+        }
+
+        .print-container {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+        }
+    }
+</style>
+
+
+<h1>GroupPODetails</h1>
+<div>
+    <button class="btn btn-primary" onclick="window.print()">列印檢貨單</button>
+</div>
+<form class="row" asp-action="PODetails">
+    <div class="col-6">
+        <div class="col-xl">
+            <div class="card mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">訂單資料</h5>
+                    <div>
+                        @Html.DropDownListFor(x=>x.OrderStatus, OrderStatus, new { @class = "form-control" })
+                    </div>
+
+                </div>
+                <div class="card-body">
+
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="ProductOrderId">訂單編號</label>
+                        <input asp-for="ProductOrderId" class="form-control-plaintext" readonly />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="CreateDate">訂單日期</label>
+                        <input asp-for="CreateDate" class="form-control-plaintext" readonly />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="OrderStatus">訂單狀態</label>
+                        <div class="input-group input-group-merge">
+                            <input asp-for="OrderStatus" class="form-control-plaintext" readonly />
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">儲存</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl">
+            <div class="card mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">訂購人資訊</h5>
+                </div>
+                <div class="card-body">
+
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="Receiver">收件人</label>
+                        <input type="hidden" asp-for="ProductOrderId" />
+                        <h5>@Html.DisplayFor(model => model.Receiver)</h5>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label"
+                               asp-for="Address">地址</label>
+                        <h5>@Html.DisplayFor(model => model.Address)</h5>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="Mobile">連絡電話</label>
+                        <div class="input-group input-group-merge">
+                            <h5> @Html.DisplayFor(model => model.Mobile)</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl">
+            <div class="card mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">付款資料</h5>
+                    <div>@Html.DropDownListFor(x=>x.PaymentStatus, PaymentStatus, new { @class = "form-control d-inline-flex p-2" })</div>
+                </div>
+                <div class="card-body">
+
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="PaymentStatus">付款狀態</label>
+                        <input type="hidden" asp-for="ProductOrderId" />
+                        <input asp-for="PaymentStatus" class="form-control-plaintext" readonly />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="PaymentMethod">付款方法</label>
+                        <input asp-for="PaymentMethod" class="form-control-plaintext" readonly />
+                    </div>
+                    <button type="submit" class="btn btn-primary">儲存</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl">
+            <div class="card mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">送貨資料</h5>
+                    <div>@Html.DropDownListFor(x=>x.ShipmentStatus, ShipmentStatus, new { @class = "form-control d-inline-flex p-2" })</div>
+                </div>
+                <div class="card-body">
+
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="ShipmentStatus">
+                            送貨狀態
+                        </label>
+                        <input type="hidden" asp-for="ProductOrderId" />
+                        <input asp-for="ShipmentStatus" class="form-control-plaintext" readonly />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label"
+                               asp-for="ShipmentMethod">送貨方法</label>
+                        <input asp-for="ShipmentMethod" class="form-control-plaintext" readonly />
+                    </div>
+                    <button type="submit" class="btn btn-primary">儲存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-6 print-container">
+        <div class="col-xl">
+            <div class="card mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">商品詳情</h5>
+                    <input type="hidden" asp-for="ProductOrderId" />
+                    <small class="text-muted float-end">Default label</small>
+                </div>
+                <div class="card">
+                    <div class="table-responsive text-nowrap">
+                        <table class="table table-borderless">
+                            <thead>
+                                <tr>
+                                    <th>ProductName</th>
+                                    <th>Price</th>
+                                    <th>Qty</th>
+                                    <th>SubTotal</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                @foreach (var item in Model.OrderDetails)
+                                {
+                                    <tr>
+                                        <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>@Html.DisplayFor(modelItem => item.ProductName)</strong></td>
+                                        <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>@Html.DisplayFor(modelItem => item.Price)</strong></td>
+                                        <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>@Html.DisplayFor(modelItem => item.Qty)</strong></td>
+                                        <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>@Html.DisplayFor(modelItem => item.SubTotal)</strong></td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card-body">
+
+                    <div class="mb-3">
+                        <label class="form-label">合計</label>
+                        <div class="input-group input-group-merge">
+                            <h5> @Html.DisplayFor(model => model.Total)</h5>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+    </div>
+</form>
+@section Scripts{
+    <script>
+        function printDiv() {
+            var newWin = window.open('', '列印視窗');
+            newWin.document.open();
+            newWin.document.write('
+                <html>
+                                '
+                                    '
+                < body onload = "window.print()" >
+                '+
+                                        $('#printArea').html() +
+                '
+                < /body>'+
+                                  '
+                < /html>');
+                          newWin.document.close();
+    </script>
+
+ }
+

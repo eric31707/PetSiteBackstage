@@ -1,0 +1,59 @@
+﻿@model IEnumerable<PetSite.Models.EFModels.Product>
+
+<table class="table">
+	<thead>
+		<tr>
+			<th>
+				產品
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Color)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Size)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Flavor)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Quantity)
+			</th>
+		</tr>
+	</thead>
+	@{
+		int a = 1;
+		string stringid= $"fullContenta{a.ToString()}";
+	}
+	<tbody id="abc">
+		@foreach (var item in Model)
+		{
+			a++;
+			stringid = $"fullContenta{a.ToString()}";
+			<tr id="@stringid">
+				<td>
+					@Html.DisplayFor(modelItem => item.Name)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Color.Name)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Size.Name)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Flavor.Name)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Quantity)
+				</td>
+			</tr>
+		}
+	</tbody>
+	@*<a id="a" class="btn btn-dark">測試</a>*@
+</table>
+	<script>
+		console.log(document.querySelector("#abc"));
+		let qwe = document.querySelector("#a");
+		qwe.addEventListener("click",function(){
+			console.log(document.querySelector("#abc"));
+		});
+	</script>

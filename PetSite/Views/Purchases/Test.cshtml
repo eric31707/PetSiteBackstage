@@ -1,0 +1,114 @@
+﻿@model PetSite.Models.ViewModels.PurchaseItemVM
+
+<form asp-action="Test">
+	<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+	<label class="control-label">供應商</label>
+	<select class="" asp-for="SupplierName" asp-items="ViewBag.SupplierId"></select>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>產品</th>
+				<th>大小</th>
+				<th>顏色</th>
+				<th>口味</th>
+				<th>價格</th>
+				<th>數量</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><select class="form-select" name="ProductName" asp-items="ViewBag.Product"></select></td>
+				<td><select class="form-select" name="Size" asp-items="ViewBag.Size"></select></td>
+				<td><select class="form-select" name="Color" asp-items="ViewBag.Color"></select></td>
+				<td><select class="form-select" name="Flavor" asp-items="ViewBag.Flavor"></select></td>
+				<td><input class="form-control" asp-for="Price" required="required" /></td>
+				<td><input class="form-control" asp-for="Qty" required="required"/></td>
+			</tr>
+		</tbody>
+	</table>
+	<input type="submit" value="Create" class="form-group my-1 btn btn-primary" />
+	<a asp-action="Index" class="btn btn-secondary">返回</a>
+	<button id="Add" type="button" class="btn btn-success">新增表格</button>
+	<button id="AddAjax" type="button" class="btn btn-success">AjAX</button>
+	1
+</form>
+
+@section Scripts {
+	<script>
+
+		let index = 2;
+		let dataProduct;
+		//拿產品資料
+		$.ajax({
+			type: "POST",
+			url: "https://localhost:7246/Purchases/Test/Json",
+		}).done(function (data) {
+			dataProduct = JSON.parse(JSON.stringify(data));
+			console.log(dataProduct);
+			console.log(dataProduct.colorItem[0].colorId);
+			console.log(dataProduct.productItem[0].name);
+		}).fail(function (err) {
+			alert(err.statusText);
+		});
+		//抓新增按鈕選擇器
+		const buttonAdd = document.querySelector("#Add");
+		buttonAdd.addEventListener("click", function () {
+			console.log(123);
+			let a = document.querySelector("table tbody");
+			let addth = document.createElement('tr');
+			//新增productOptionHtml
+			let productOptionHtml = `<td><select class="form-select" name="ProductName">`
+			for (let i = 0; i < dataProduct.productItem.length; i++) {
+				productOptionHtml += `<option>${dataProduct.productItem[i].name}</option>`;
+			}
+			productOptionHtml += `</select></td>`;
+			//新增sizeOptionHtml
+			productOptionHtml += `<td><select class="form-select" name="Size" >`;
+			for (let i = 0; i < dataProduct.sizeItem.length; i++) {
+				productOptionHtml += `<option Value="${dataProduct.sizeItem[i].sizeId}">${dataProduct.sizeItem[i].name}</option>`;
+			}
+			productOptionHtml += `</select></td>`;
+			//新增colorOptionHtml
+			productOptionHtml += `<td><select class="form-select" name="Color">`;
+			for (let i = 0; i < dataProduct.colorItem.length; i++) {
+				productOptionHtml += `<option Value="${dataProduct.colorItem[i].colorId}">${dataProduct.colorItem[i].name}</option>`;
+			}
+			productOptionHtml += `</select></td>`;
+			//新增flavorOptionHtml
+			productOptionHtml += `<td><select class="form-select" name="Flavor">`;
+			for (let i = 0; i < dataProduct.flavorItem.length; i++) {
+				productOptionHtml += `<option Value="${dataProduct.flavorItem[i].flavorId}">${dataProduct.flavorItem[i].name}</option>`;
+			}
+			productOptionHtml += `</select></td>`;
+			//新增最後按鈕
+			productOptionHtml += `<td><input class="form-control" name="Price" required="required"/></td>
+								   <td><input class="form-control" name="Qty" required="required"/></td>
+						   <td><button id=Delete${index} type="button" class="btn btn-danger">刪除表格</button></td>`;
+			addth.innerHTML = productOptionHtml;
+			//addth.innerHTML = `<td><select class="form-control" name="PurchaseItemCreateList[${index}].ProductName"
+			//																		asp-items="ViewBag.Product"></select>
+			//																</td>
+			//																<td><select class="form-control" name="PurchaseItemCreateList[${index}].Size" asp-items="ViewBag.Size}"></select></td>
+			//																<td><select class="form-control" name="PurchaseItemCreateList[${index}].Color" asp-items="ViewBag.Color"></select></td>
+			//																<td><select class="form-control" name="PurchaseItemCreateList[${index}].Flavor" asp-items="ViewBag.Flavor"></select>
+			//																</td>
+			//																<td>
+			//																	<input class="form-control" name="PurchaseItemCreateList[${index}].Price" />
+			//																</td>
+			//																<td><input class="form-control" name="PurchaseItemCreateList[${index}].Qty" /></td>
+			//																	<td><button id=Delete${index} type="button" class="btn btn-success">刪除表格</button></td>
+			//																								`;
+			a.prepend(addth);
+			console.log(document.querySelector("table tbody"));
+			let deletebutton = document.querySelector(`#Delete${index}`);
+			let tr = document.querySelector('table tbody tr');
+			deletebutton.addEventListener("click", function () {
+				tr.remove();
+			});
+			index++;
+		});
+
+
+
+	</script>
+}

@@ -1,0 +1,122 @@
+﻿@model List<PetSite.Models.VM.ProductVM>
+@{
+	ViewData["Title"] = "Index";
+}
+
+<h1>商品總覽</h1>
+
+<p>
+	<a asp-action="Create">新增商品</a>
+</p>
+<table class="table">
+	<thead>
+		<tr>
+			<th>商品名稱</th>
+			<th>價格</th>
+			<th>介紹</th>
+			<th>狀態</th>
+			<th>數量</th>
+			<th>分類名稱</th>
+			<th>顏色</th>
+			<th>口味</th>
+			<th>尺寸</th>
+			<th>物種</th>
+			
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model)
+		{
+			<tr>
+				<td>
+					@Html.DisplayFor(modelItem => item.Name)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Price)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Description)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Status)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Quantity)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Category.Name)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Color.Name)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Flavor.Name)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Size.Name)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Species.Name)
+				</td>
+				<td>
+					@foreach (var n in item.ImageName)
+					{
+						<img src="~/ProductImages/@n" style="width:100px;height:100px;">
+						<input value="@n" type="checkbox" id="@n" class="productpics @item.Id">
+
+					}
+				</td>	
+				<td>
+                        <div class="dropdown">
+                        <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bx bx-dots-vertical-rounded"></i>
+                        </button>
+                        <div class="dropdown-menu" style="">
+							<a class="dropdown-item" id="@item.Id" onclick="myFunction(@item.Id)" >
+								<iconify-icon icon="line-md:image-twotone" width="18.4"></iconify-icon>
+								<span>刪除圖片</span>
+							</a>
+							<a class="dropdown-item" asp-action="Edit" asp-route-id="@item.Id">
+									<iconify-icon icon="line-md:edit" width="18.4"></iconify-icon>
+								編輯商品	
+							</a>
+                       </div>
+                        </div>
+				<td>
+						@using (@Html.BeginForm("Delete", "Products", FormMethod.Post))
+						{
+							@Html.Hidden("id",item.Id)
+						<input type="submit" value="刪除商品" class="btn btn-default" style="background-color:aqua" />
+						}
+				</td>
+
+					
+			</tr>
+		}
+	</tbody>
+</table>
+@section Scripts
+	{
+	<script>
+		function myFunction(number) {
+			$(`.productpics.${number}:checked`).each(function () {
+				let n = $(this).val();
+				$.ajax({
+					url: "/Products/ImgDelete?img=" + n,
+				}).done(function (data) {
+					alert(data);
+					window.location.reload();
+				}).fail(function (err) {
+					alert(err.statusText);
+				});
+
+			})
+
+
+		}
+
+	</script>
+	<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="https://code.iconify.design/iconify-icon/1.0.2/iconify-icon.min.js"></script>
+
+}

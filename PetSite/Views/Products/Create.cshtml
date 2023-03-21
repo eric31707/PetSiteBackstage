@@ -1,0 +1,74 @@
+﻿@model PetSite.Models.VM.ProductVM
+
+@{
+	ViewData["Title"] = "Create";
+}
+
+<h1>新增商品</h1>
+
+<hr />
+<div class="row">
+	<div class="col-md-4">
+		<form asp-action="Create" enctype="multipart/form-data">
+			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+			<div class="form-group">
+				<label asp-for="Name" class="control-label"></label>
+				<input asp-for="Name" class="form-control" />
+				<span asp-validation-for="Name" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="Price" class="control-label"></label>
+				<input asp-for="Price" class="form-control" />
+				<span asp-validation-for="Price" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="Description" class="control-label"></label>
+				<input asp-for="Description" class="form-control" />
+				<span asp-validation-for="Description" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="CategoryId" class="control-label"></label>
+				<select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
+			</div>
+			<div class="form-group form-check">
+				<label class="form-check-label">
+					<input class="form-check-input" asp-for="Status" /> @Html.DisplayNameFor(model => model.Status)
+				</label>
+			</div>
+			<div class="form-group">
+				<label asp-for="SizeId" class="control-label"></label>
+				<select asp-for="SizeId" class="form-control" asp-items="ViewBag.SizeId"></select>
+			</div>
+			<div class="form-group">
+				<label asp-for="ColorId" class="control-label"></label>
+				<select asp-for="ColorId" class="form-control" asp-items="ViewBag.ColorId"></select>
+			</div>
+			<div class="form-group">
+				<label asp-for="FlavorId" class="control-label"></label>
+				<select asp-for="FlavorId" class="form-control" asp-items="ViewBag.FlavorId"></select>
+			</div>
+			<div class="form-group">
+				<label asp-for="SpeciesId" class="control-label"></label>
+				<select asp-for="SpeciesId" class="form-control" asp-items="ViewBag.SpeciesId"></select>
+			</div>
+			<div class="form-group">
+				<label asp-for="Image" class="control-label"></label>
+				<input asp-for="Image" type="file" name="Image" id="Image" class="formfile form-control" multiple accept="image/*" />
+				<span asp-validation-for="Image" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<input type="submit" value="Create" class="btn btn-primary" />
+			</div>
+		</form>
+	</div>
+</div>
+
+<div>
+	<a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+	@{
+		await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	}
+}

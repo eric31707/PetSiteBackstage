@@ -1,0 +1,444 @@
+﻿@{
+	ViewData["Title"] = "Home Page";
+}
+
+<div class="container-xxl flex-grow-1 container-p-y">
+	<div class="row">
+		<div class="col-lg-8 mb-4 order-0">
+			<div class="card">
+				<div class="d-flex align-items-end row">
+					<div class="col-sm-7">
+						<div class="card-body">
+							<h5 class="card-title text-primary">Hello ! 🎉</h5>
+							<p class="mb-4">
+								歡迎進入管理頁面!!
+							</p>
+
+
+						</div>
+					</div>
+					<div class="col-sm-5 text-center text-sm-left">
+						<div class="card-body pb-0 px-0 px-md-4">
+							<img src="~/assets/img/layouts/pet (1).png"
+								 height="140"
+								 alt="View Badge User" />
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-4 col-md-4 order-1">
+			<div class="row">
+				<div class="col-lg-6 col-md-12 col-6 mb-4">
+					<div class="card">
+						<div class="card-body">
+							<div class="card-title d-flex align-items-start justify-content-between">
+								<div class="avatar flex-shrink-0">
+									<img src="../assets/img/icons/unicons/chart-success.png"
+										 alt="chart success"
+										 class="rounded" />
+								</div>
+								<div class="dropdown">
+									<button class="btn p-0"
+											type="button"
+											id="cardOpt3"
+											data-bs-toggle="dropdown"
+											aria-haspopup="true"
+											aria-expanded="false">
+										<i class="bx bx-dots-vertical-rounded"></i>
+									</button>
+									<div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt3">
+										<a class="dropdown-item" href="javascript:void(0);">View More</a>
+										<a class="dropdown-item" href="javascript:void(0);">Delete</a>
+									</div>
+								</div>
+							</div>
+							<span class="fw-semibold d-block mb-1">會員總數</span>
+							<h3 class="card-title mb-2" id="memberAmount"></h3>
+							<small class="text-success fw-semibold"></small>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-6 col-md-12 col-6 mb-4">
+					<div class="card">
+						<div class="card-body">
+							<div class="card-title d-flex align-items-start justify-content-between">
+								<div class="avatar flex-shrink-0">
+									<img src="../assets/img/icons/unicons/wallet-info.png"
+										 alt="Credit Card"
+										 class="rounded" />
+								</div>
+								<div class="dropdown">
+									<button class="btn p-0"
+											type="button"
+											id="cardOpt6"
+											data-bs-toggle="dropdown"
+											aria-haspopup="true"
+											aria-expanded="false">
+										<i class="bx bx-dots-vertical-rounded"></i>
+									</button>
+									<div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt6">
+										<a class="dropdown-item" href="javascript:void(0);">View More</a>
+										<a class="dropdown-item" href="javascript:void(0);">Delete</a>
+									</div>
+								</div>
+							</div>
+							<span>本月銷售額</span>
+							<h3 class="card-title text-nowrap mb-1" id="monthlyRevenue"></h3>
+							<small class="text-success fw-semibold"></small>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Total Revenue -->
+		<div class="col-12 col-lg-8 order-2 order-md-3 order-lg-2 mb-4">
+			<div class="card">
+				<div class="row row-bordered g-0">
+					<div class="col-md-8">
+						<h5 class="card-header m-0 me-2 pb-3">商城近半年月營收</h5>
+
+						<div id="container" style="height: 350px"></div>
+					</div>
+					<div class="col-md-4">
+						<div class="align-content-center mt-5 ms-5">
+							<img src="~/assets/img/layouts/petshop.png" />
+						</div>
+						<br />
+
+						<h5 class="card-header m-0 me-2 pb-3">商城月成長率 : </h5>
+						<h1 class="card-header m-0 me-2 pb-3 " style="color:darkred" id="growthRatio"></h1>
+						<h5 class="card-header m-0 me-2 pb-3"></h5>
+
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--/ Total Revenue -->
+		<div class="col-12 col-md-8 col-lg-4 order-3 order-md-2">
+			<div class="row">
+				<div class="col-6 mb-4">
+					<div class="card">
+						<div class="card-body">
+							<div class="card-title d-flex align-items-start justify-content-between">
+								<div class="avatar flex-shrink-0">
+									<img src="../assets/img/icons/unicons/paypal.png" alt="Credit Card" class="rounded" />
+								</div>
+								<div class="dropdown">
+									<button class="btn p-0"
+											type="button"
+											id="cardOpt4"
+											data-bs-toggle="dropdown"
+											aria-haspopup="true"
+											aria-expanded="false">
+										<i class="bx bx-dots-vertical-rounded"></i>
+									</button>
+									<div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt4">
+										<a class="dropdown-item" href="javascript:void(0);">View More</a>
+										<a class="dropdown-item" href="javascript:void(0);">Delete</a>
+									</div>
+								</div>
+							</div>
+							<span class="d-block mb-1">待領養寵物總數</span>
+							<h3 class="card-title text-nowrap mb-2" id="adoptionAmount"></h3>
+							<small class="text-danger fw-semibold"></small>
+						</div>
+					</div>
+				</div>
+				<div class="col-6 mb-4">
+					<div class="card">
+						<div class="card-body">
+							<div class="card-title d-flex align-items-start justify-content-between">
+								<div class="avatar flex-shrink-0">
+									<img src="../assets/img/icons/unicons/cc-primary.png" alt="Credit Card" class="rounded" />
+								</div>
+								<div class="dropdown">
+									<button class="btn p-0"
+											type="button"
+											id="cardOpt1"
+											data-bs-toggle="dropdown"
+											aria-haspopup="true"
+											aria-expanded="false">
+										<i class="bx bx-dots-vertical-rounded"></i>
+									</button>
+									<div class="dropdown-menu" aria-labelledby="cardOpt1">
+										<a class="dropdown-item" href="javascript:void(0);">View More</a>
+										<a class="dropdown-item" href="javascript:void(0);">Delete</a>
+									</div>
+								</div>
+							</div>
+							<span class="fw-semibold d-block mb-1">活動總數</span>
+							<h3 class="card-title mb-2" id="eventAmount"></h3>
+							<small class="text-success fw-semibold"></small>
+						</div>
+					</div>
+				</div>
+				<!-- </div>
+				<div class="row"> -->
+				<div class="col-12 mb-4">
+					<div class="card">
+						<div class="card-body">
+							<div class="d-flex justify-content-between flex-sm-row flex-column gap-3">
+								<div class="d-flex flex-sm-column flex-row align-items-start justify-content-between">
+									<div class="card-title">
+										<h5 class="text-nowrap mb-2">商品總數</h5>
+										<span class="badge bg-label-warning rounded-pill"></span>
+									</div>
+									<div class="mt-sm-auto">
+										<h3 class="mb-0" id="productAmount"></h3>
+									</div>
+								</div>
+								<div id="profileReportChart" class="m"></div>
+
+							</div>
+							<div class="fw-semibold d-block mb-1 mt-3 ">已賣出商品總數</div>
+							<h3 class="card-title mb-2 mt-3" id="soldProduct"></h3>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<!-- Order Statistics -->
+		<div class="col-md-12 col-lg-8 col-xl-8 order-0 mb-8">
+			<div class="card ">
+				<div class="row row-bordered g-0">
+					<div class="col-md-8">
+						<h5 class="card-header m-0 me-2 pb-3">寵物旅館近半年月營收</h5>
+						<div id="hotelRevenue" style="height:350px"></div>
+					</div>
+					<div class="col-md-4">
+						<div class="align-content-center mt-5 ms-5">
+							<img src="~/assets/img/layouts/pet-hotel.png" />
+						</div>
+						<br />
+
+						<h5 class="card-header m-0 me-2 pb-3">寵物旅館月成長率 : </h5>
+						<h1 class="card-header m-0 me-2 pb-3 " style="color:darkred" id="hotelGrowthRatio"></h1>
+						<h5 class="card-header m-0 me-2 pb-3"></h5>
+
+					</div>
+				</div>
+
+			</div>
+		</div>
+		<!--/ Order Statistics -->
+		<!-- Expense Overview -->
+		<div class="col-md-6 col-lg-4 order-1 mb-4">
+			<div class="card h-100">
+				<div class="card-header">
+					<h5 class="card-header m-0 me-2 pb-3">會員近半年人數月增加</h5>
+				</div>
+				<div class="card-body px-0">
+					<div id="memberCount" style="height:280px"></div>
+					
+				</div>
+			</div>
+		</div>
+		<!--/ Expense Overview -->
+
+	</div>
+</div>
+<div id="container" style="height: 500px"></div>
+
+
+<script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@5.4.1/dist/echarts.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+<script>
+
+	var date = new Date();
+	var month = date.getMonth() + 1;
+	var monthdata = [];
+	var revenue = [];
+
+	$.ajax({
+		type: "POST",
+		url: `/Home/GetRevenue`,
+		contentType: "application/json"
+	}).done(function (data) {
+		for (var i = 0; i <= 5; i++) {
+			if (month <= 5) {
+				if (month + i > 5) {
+					monthdata.push(data[month + i - 6]["month"].toString());
+					revenue.push(data[month + i - 6]["revenue"].toString());
+				} else {
+					monthdata.push(data[month + i]["month"].toString());
+					revenue.push(data[month + i]["revenue"].toString());
+				}
+
+			} else {
+				monthdata.push(data[i]["month"].toString());
+				revenue.push(data[i]["revenue"].toString());
+			}
+		}
+		$("#monthlyRevenue").html("$" + revenue[5]);
+		$("#growthRatio").html(((revenue[5] - revenue[4]) / revenue[4]).toFixed(2) * 100 + "%");
+		var dom = document.getElementById('container');
+		var myChart = echarts.init(dom, null, {
+			renderer: 'canvas',
+			useDirtyRect: false
+		});
+		var app = {};
+
+		var option;
+
+		option = {
+			xAxis: {
+				type: 'category',
+				data: monthdata
+			},
+			yAxis: {
+				type: 'value'
+			},
+			series: [
+				{
+					data: [revenue[0], revenue[1], revenue[2], revenue[3], revenue[4], revenue[5]],
+					type: 'bar',
+					showBackground: true,
+					backgroundStyle: {
+						color: 'rgba(204, 215, 234, 0.5)'
+					}
+				}
+			]
+		};
+
+		if (option && typeof option === 'object') {
+			myChart.setOption(option);
+		}
+
+
+		window.addEventListener('resize', myChart.resize);
+
+	}).fail(function (err) {
+		alert(err.statusText);
+	})
+
+
+	$.ajax({
+		type: "POST",
+		url: `/Home/GetHotelRevenue`,
+		contentType: "application/json"
+	}).done(function (data) {
+		var monthData = [];
+		var hotelRevenue = [];
+		for (var i = 0; i <= 5; i++) {
+			if (month <= 5) {
+				if (month + i > 5) {
+					monthData.push(data[month + i - 6]["month"].toString());
+					hotelRevenue.push(data[month + i - 6]["revenue"].toString());
+				} else {
+					monthData.push(data[month + i]["month"].toString());
+					hotelRevenue.push(data[month + i]["revenue"].toString());
+				}
+
+			} else {
+				monthData.push(data[i]["month"].toString());
+				hotelRevenue.push(data[i]["revenue"].toString());
+			}
+		}
+		$("#hotelGrowthRatio").html(((hotelRevenue[5] - hotelRevenue[4]) / hotelRevenue[4]).toFixed(2) * 100 + "%");
+		var dom = document.getElementById('hotelRevenue');
+		var myChart = echarts.init(dom, null, {
+			renderer: 'canvas',
+			useDirtyRect: false
+		});
+		var app = {};
+
+		var option;
+
+		option = {
+			xAxis: {
+				type: 'category',
+				data: monthData
+			},
+			yAxis: {
+				type: 'value'
+			},
+			series: [
+				{
+					data: [hotelRevenue[0], hotelRevenue[1], hotelRevenue[2], hotelRevenue[3], hotelRevenue[4], hotelRevenue[5]],
+					type: 'bar',
+					showBackground: true,
+					backgroundStyle: {
+						color: 'rgba(204, 215, 234, 0.5)'
+					}
+				}
+			]
+		};
+
+		if (option && typeof option === 'object') {
+			myChart.setOption(option);
+		}
+
+		window.addEventListener('resize', myChart.resize);
+
+	}).fail(function (err) {
+		alert(err.statusText);
+	})
+
+	$.ajax({
+		type: "POST",
+		url: `/Home/GetData`,
+		contentType: "application/json"
+	}).done(function (data) {
+		$("#memberAmount").html(data["memberAmount"]);
+		$("#adoptionAmount").html(data["adoptionAmount"]);
+		$("#eventAmount").html(data["eventAmount"]);
+		$("#productAmount").html(data["productAmount"]);
+		$("#soldProduct").html(data["soldProduct"]);
+
+	}).fail(function (err) {
+		alert(err.statusText);
+	})
+
+	
+
+	//$.ajax({
+	//	type: "POST",
+	//	url: `/Home/GetMemberCount`,
+	//	contentType: "application/json"
+	//}).done(function (data) {
+	//	var monthData = [];
+	//	var memberCount = [];
+	//	for (var i = 0; i <= 5; i++) {
+	//		if (month <= 5) {
+	//			if (month + i > 5) {
+	//				monthData.push(data[month + i - 6]["month"].toString());
+	//				memberCount.push(data[month + i - 6]["revenue"].toString());
+	//			} else {
+	//				monthData.push(data[month + i]["month"].toString());
+	//				memberCount.push(data[month + i]["revenue"].toString());
+	//			}
+
+	//		} else {
+	//			monthData.push(data[i]["month"].toString());
+	//			memberCount.push(data[i]["revenue"].toString());
+	//		}
+	//	}
+	//	var chartDom = document.getElementById('memberCount');
+	//	var myChart = echarts.init(chartDom);
+	//	var option;
+
+	//	option = {
+	//		xAxis: {
+	//			type: 'category',
+	//			data: monthData
+	//		},
+	//		yAxis: {
+	//			type: 'value'
+	//		},
+	//		series: [
+	//			{
+	//				data: memberCount,
+	//				type: 'line',
+	//				smooth: true
+	//			}
+	//		]
+	//	};
+	//	option && myChart.setOption(option);
+	//}).fail(function (err) {
+	//	alert(err.statusText);
+	//})
+
+</script>

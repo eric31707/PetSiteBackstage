@@ -1,0 +1,280 @@
+﻿@model List<PetSite.Models.EFModels.RoomOrderItem>
+@{
+    //@foreach (var n in Model)
+    //{
+    //    var startdate = n.StartDate;
+    //    var enddate = n.EndDate;
+    //    <p id="StartDate" >@n.StartDate</p>
+    //    <p id="EndDate" >@n.EndDate</p>
+    //}
+    //for (int i = 0; i < Model.Count; i++)
+    //{
+    //    var startdate = Model[i].StartDate;
+    //    var enddate = Model[i].EndDate;
+    //    <p id="StartDate_@i">@startdate</p>
+    //    <p id="EndDate_@i">@enddate</p>
+    //}
+}
+
+<div class="container">
+    <div class="my-2">
+        欲查詢月份:
+        <input id="IconDemo" class='Default mx-1' type="text" onchange="changedate()">
+        <button class="btn-primary search mx-1">查詢</button>
+    </div>
+</div>
+
+
+@*<div class="form-group my-2" style="width:50%;">
+    <label for="mydate">Calendar date:</label>
+    <div style="position:relative">
+        <input id="mydate" type="text" class="form-control" data-date-format="dd/mm/yyyy" placeholder="Select a Date">
+        <span style="font-size: 20px;
+    				position: absolute;
+				  	pointer-events: none;
+   			 		top: 6px;
+   					right: 2%;"
+              class="glyphicon glyphicon-calendar"></span>
+        <!-- 		  	  <span class="alert alert-danger sample-validation">a very very long error message</span> -->
+    </div>
+</div>
+<div class="bdc" style="position:relative"></div>*@
+
+
+@section Links
+    {
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1,
+      shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap"
+      rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500&display=swap"
+      rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker3.css" rel="stylesheet" />
+                    @*<link rel="stylesheet" href="~/fonts/icomoon/style.css">*@
+    <link href='~/calendar-20/fullcalendar/packages/core/main.css' rel='stylesheet' />
+    <link href='~/calendar-20/fullcalendar/packages/daygrid/main.css' rel='stylesheet' />
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="~/calendar-20/css/bootstrap.min.css">
+    <!-- Style -->
+    <link rel="stylesheet" href="~/calendar-20/css/style.css">
+    <link rel="stylesheet" href="~/calendar-20/css/reset.css">
+    <link href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" rel="stylesheet" type="text/css" />
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+    <link href="~/Kidmonthpicker/MonthPicker.min.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="~/Kidmonthpicker/examples.css" />
+
+    }
+
+@section Scripts
+    {
+    <script src="~/calendar-20/js/jquery-3.3.1.min.js"></script>
+    <script src="~/calendar-20/js/popper.min.js"></script>
+    <script src="~/calendar-20/js/bootstrap.min.js"></script>
+    <script src='~/calendar-20/fullcalendar/packages/core/main.js'></script>
+    <script src='~/calendar-20/fullcalendar/packages/interaction/main.js'></script>
+    <script src='~/calendar-20/fullcalendar/packages/daygrid/main.js'></script>
+    <script src='~/calendar-20/fullcalendar/packages/timegrid/main.js'></script>
+    <script src='~/calendar-20/fullcalendar/packages/list/main.js'></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.1.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+    <script src="https://cdn.rawgit.com/digitalBush/jquery.maskedinput/1.4.1/dist/jquery.maskedinput.min.js"></script>
+    <script src="~/js/jquery.monthpicker.min.js"></script>
+    <script src="~/Kidmonthpicker/examples.js"></script>
+    <script src="~/Kidmonthpicker/MonthPicker.min.js"></script>
+    <script>
+        //console.log(date.toISOString().split('T')[0]);
+        //$.each(@Model,function(key,value){
+        //     startdate = value.StartDate
+        //     enddate=value.EndDate
+        //})
+        document.addEventListener('DOMContentLoaded', function () {
+            //$(document).ready(function () {
+            //    $('#mydate').datepicker({
+            //        todayHighlight: true,
+            //        orientation: "bottom left",
+            //        format: "yyyy-mm-dd",
+            //        container: ".bdc"
+            //        //container: console.log($(this).datepicker())
+            //    });
+            //});
+            var startdate = $("#StartDate_1").text()
+            var roomOrder = []
+            $.ajax({
+                type: "GET",
+                url: "https://localhost:7246/RoomStatus/getStatus"
+            }).then((result) => {
+                let searchdate = getdate(new Date());
+                $.each(result, function (key, value) {
+                    var startdate = getdate(new Date(value.startDate))
+                    var enddate = getdate(new Date(value.endDate))
+                    var events = {
+                        title: "訂單編號:" + value.roomOrderId + " 房間編號:" + value.roomId,
+                        start: startdate,
+                        end: enddate,
+                    }
+                    roomOrder.push(events)
+                })
+                calander(searchdate, roomOrder);
+            });
+            $('#IconDemo').MonthPicker();
+            //2020-02-15
+            $(".search").on("click", function () {
+                searchdate = $('#IconDemo').val()
+                const [month, year] = searchdate.split('/');
+                const finaldate = year + "-" + month + "-" + "01";
+                calander(finaldate, roomOrder);
+
+            })
+        })
+        function getdate(date) {
+            date = new Date(date)
+            var year = date.getFullYear()
+            var month = date.getMonth() + 1
+            var date = date.getDate() + 1
+            if (month < 10) {
+                month = "0" + month
+            }
+            if (date < 10) {
+                date = "0" + date
+            }
+            return year + "-" + month + "-" + date
+        }
+        function calander(searchdate, roomOrder) {
+            var calendarEl = document.getElementById('calendar');
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                plugins: ['interaction', 'dayGrid', 'timeGrid', 'list'],
+                height: 'parent',
+                header: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: ''/*dayGridMonth,timeGridWeek,timeGridDay,listWeek'*/
+                },
+                defaultView: 'dayGridMonth',
+                defaultDate: searchdate,
+                navLinks: true, // can click day/week names to navigate views
+                editable: true,
+                eventLimit: true, // allow "more" link when too many events
+                events: roomOrder
+
+                // [
+                //    //{
+                //    //    title: 'All Day Event',
+                //    //    start: '2020-02-01',
+                //    //},
+                //    //{
+                //    //    title: 'Long Event',
+                //    //    start: '2020-02-07',
+                //    //    end: '2020-02-15'
+                //    //},
+                //    //{
+                //    //    groupId: 100,
+                //    //    title: 'Repeating Event',
+                //    //    start: '2020-02-01T16:00:00'
+                //    //},
+                //    //{
+                //    //    groupId: 999,
+                //    //    title: 'Repeating Event',
+                //    //    start: '2020-02-16T16:00:00'
+                //    //},
+
+                //    {
+                //        title: 'Conference',
+                //        start: '2023-02-12T10:30:00',
+                //        end: '2023-02-14T10:30:00'
+                //    },
+                //    {
+                //        title: 'Conference',
+                //        start: '2023-02-12T10:30:00',
+                //        end: '2023-02-14T10:30:00'
+                //    },
+                //    //{
+                //    //    title: 'Meeting',
+                //    //    start: '2020-02-12T10:30:00',
+                //    //    end: '2020-02-12T12:30:00'
+                //    //},
+                //    //{
+                //    //    title: 'Lunch',
+                //    //    start: '2020-02-12T12:00:00'
+                //    //},
+                //    //{
+                //    //    title: 'Meeting',
+                //    //    start: '2020-02-12T14:30:00'
+                //    //},
+                //    //{
+                //    //    title: 'Happy Hour',
+                //    //    start: '2020-02-12T17:30:00'
+                //    //},
+                //    //{
+                //    //    title: 'Dinner',
+                //    //    start: '2020-02-12T20:00:00'
+                //    //},
+                //    //{
+                //    //    title: 'Birthday Party',
+                //    //    start: '2020-02-13T07:00:00'
+                //    //},
+                //    {
+                //    //    title: 'Click for Google',
+                //    //    url: 'http://google.com/',
+                //    //    start: '2020-02-28'
+                //    //}
+                //]
+            });
+            calendar.render();
+            $(".fc-prev-button").on("click", function () {
+                clickdate()
+            })
+            $(".fc-next-button").on("click", function () {
+                clickdate()
+            })
+            $(".fc-today-button").on("click", function () {
+                clickdate()
+            })
+            clickdate()
+        };
+        function clickdate() {
+            $(".fc-content").on("click", function (e) {
+                var num = e.target.innerHTML.split(":")[1]
+                var orderId = num.split(" ")[0]
+                var roomId = e.target.innerHTML.split(":")[2]
+                $("#roomstatus").load('@Url.Content("_PartialStatus/")' + orderId + "/" + roomId)               
+                //1.取roomId
+                //2.透過Id 建立partialView
+                //3.對modal.innerhtml(版型固定)
+                $("#exampleModal").modal("show")
+            })
+        }
+    </script>
+    <script src="~/calendar-20/js/main.js"></script>
+    }
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="width: auto;height:auto">
+            <div class="modal-header">
+                <h2 class="modal-title" id="exampleModalLabel">詳細資訊</h2>             
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" asp-for="RoomId">
+                <div id="roomstatus" >
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>              
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+
+    <div class="row justify-content-end">
+        <div id="calendar-container" class="col-10 justify-content-end float-end mx-5">
+            <div id="calendar" class="fc fc-ltr fc-unthemed mx-5" style=""><div class="fc-toolbar fc-header-toolbar"><div class="fc-left"><div class="fc-button-group"><button type="button" class="fc-prev-button fc-button fc-button-primary" aria-label="prev"><span class="fc-icon fc-icon-chevron-left"></span></button><button type="button" class="fc-next-button fc-button fc-button-primary" aria-label="next"><span class="fc-icon fc-icon-chevron-right"></span></button></div><button type="button" class="fc-today-button fc-button fc-button-primary" disabled="">today</button></div><div class="fc-center"><h2>January 2023</h2></div><div class="fc-right"><div class="fc-button-group"><button type="button" class="fc-dayGridMonth-button fc-button fc-button-primary fc-button-active">month</button><button type="button" class="fc-timeGridWeek-button fc-button fc-button-primary">week</button><button type="button" class="fc-timeGridDay-button fc-button fc-button-primary">day</button><button type="button" class="fc-listWeek-button fc-button fc-button-primary">list</button></div></div></div><div class="fc-view-container"><div class="fc-view fc-dayGridMonth-view fc-dayGrid-view" style=""><table class=""><thead class="fc-head"><tr><td class="fc-head-container fc-widget-header"><div class="fc-row fc-widget-header"><table class=""><thead><tr><th class="fc-day-header fc-widget-header fc-sun"><span>Sun</span></th><th class="fc-day-header fc-widget-header fc-mon"><span>Mon</span></th><th class="fc-day-header fc-widget-header fc-tue"><span>Tue</span></th><th class="fc-day-header fc-widget-header fc-wed"><span>Wed</span></th><th class="fc-day-header fc-widget-header fc-thu"><span>Thu</span></th><th class="fc-day-header fc-widget-header fc-fri"><span>Fri</span></th><th class="fc-day-header fc-widget-header fc-sat"><span>Sat</span></th></tr></thead></table></div></td></tr></thead><tbody class="fc-body"><tr><td class="fc-widget-content"><div class="fc-scroller fc-day-grid-container" style="overflow: hidden; height: 1020.77px;"><div class="fc-day-grid"><div class="fc-row fc-week fc-widget-content fc-rigid" style="height: 170px;"><div class="fc-bg"><table class=""><tbody><tr><td class="fc-day fc-widget-content fc-sun fc-past" data-date="2023-01-01"></td><td class="fc-day fc-widget-content fc-mon fc-past" data-date="2023-01-02"></td><td class="fc-day fc-widget-content fc-tue fc-past" data-date="2023-01-03"></td><td class="fc-day fc-widget-content fc-wed fc-past" data-date="2023-01-04"></td><td class="fc-day fc-widget-content fc-thu fc-past" data-date="2023-01-05"></td><td class="fc-day fc-widget-content fc-fri fc-past" data-date="2023-01-06"></td><td class="fc-day fc-widget-content fc-sat fc-past" data-date="2023-01-07"></td></tr></tbody></table></div><div class="fc-content-skeleton"><table><thead><tr><td class="fc-day-top fc-sun fc-past" data-date="2023-01-01"><a class="fc-day-number" data-goto="{&quot;date&quot;:&quot;2023-01-01&quot;,&quot;type&quot;:&quot;day&quot;}">1</a></td><td class="fc-day-top fc-mon fc-past" data-date="2023-01-02"><a class="fc-day-number" data-goto="{&quot;date&quot;:&quot;2023-01-02&quot;,&quot;type&quot;:&quot;day&quot;}">2</a></td><td class="fc-day-top fc-tue fc-past" data-date="2023-01-03"><a class="fc-day-number" data-goto="{&quot;date&quot;:&quot;2023-01-03&quot;,&quot;type&quot;:&quot;day&quot;}">3</a></td><td class="fc-day-top fc-wed fc-past" data-date="2023-01-04"><a class="fc-day-number" data-goto="{&quot;date&quot;:&quot;2023-01-04&quot;,&quot;type&quot;:&quot;day&quot;}">4</a></td><td class="fc-day-top fc-thu fc-past" data-date="2023-01-05"><a class="fc-day-number" data-goto="{&quot;date&quot;:&quot;2023-01-05&quot;,&quot;type&quot;:&quot;day&quot;}">5</a></td><td class="fc-day-top fc-fri fc-past" data-date="2023-01-06"><a class="fc-day-number" data-goto="{&quot;date&quot;:&quot;2023-01-06&quot;,&quot;type&quot;:&quot;day&quot;}">6</a></td><td class="fc-day-top fc-sat fc-past" data-date="2023-01-07"><a class="fc-day-number" data-goto="{&quot;date&quot;:&quot;2023-01-07&quot;,&quot;type&quot;:&quot;day&quot;}">7</a></td></tr></thead><tbody><tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr></tbody></table></div></div><div class="fc-row fc-week fc-widget-content fc-rigid" style="height: 170px;"><div class="fc-bg"><table class=""><tbody><tr><td class="fc-day fc-widget-content fc-sun fc-past" data-date="2023-01-08"></td><td class="fc-day fc-widget-content fc-mon fc-past" data-date="2023-01-09"></td><td class="fc-day fc-widget-content fc-tue fc-past" data-date="2023-01-10"></td><td class="fc-day fc-widget-content fc-wed fc-past" data-date="2023-01-11"></td><td class="fc-day fc-widget-content fc-thu fc-past" data-date="2023-01-12"></td><td class="fc-day fc-widget-content fc-fri fc-today " data-date="2023-01-13"></td><td class="fc-day fc-widget-content fc-sat fc-future" data-date="2023-01-14"></td></tr></tbody></table></div><div class="fc-content-skeleton"><table><thead><tr><td class="fc-day-top fc-sun fc-past" data-date="2023-01-08"><a class="fc-day-number" data-goto="{&quot;date&quot;:&quot;2023-01-08&quot;,&quot;type&quot;:&quot;day&quot;}">8</a></td><td class="fc-day-top fc-mon fc-past" data-date="2023-01-09"><a class="fc-day-number" data-goto="{&quot;date&quot;:&quot;2023-01-09&quot;,&quot;type&quot;:&quot;day&quot;}">9</a></td><td class="fc-day-top fc-tue fc-past" data-date="2023-01-10"><a class="fc-day-number" data-goto="{&quot;date&quot;:&quot;2023-01-10&quot;,&quot;type&quot;:&quot;day&quot;}">10</a></td><td class="fc-day-top fc-wed fc-past" data-date="2023-01-11"><a class="fc-day-number" data-goto="{&quot;date&quot;:&quot;2023-01-11&quot;,&quot;type&quot;:&quot;day&quot;}">11</a></td><td class="fc-day-top fc-thu fc-past" data-date="2023-01-12"><a class="fc-day-number" data-goto="{&quot;date&quot;:&quot;2023-01-12&quot;,&quot;type&quot;:&quot;day&quot;}">12</a></td><td class="fc-day-top fc-fri fc-today " data-date="2023-01-13"><a class="fc-day-number" data-goto="{&quot;date&quot;:&quot;2023-01-13&quot;,&quot;type&quot;:&quot;day&quot;}">13</a></td><td class="fc-day-top fc-sat fc-future" data-date="2023-01-14"><a class="fc-day-number" data-goto="{&quot;date&quot;:&quot;2023-01-14&quot;,&quot;type&quot;:&quot;day&quot;}">14</a></td></tr></thead><tbody><tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr></tbody></table></div></div><div class="fc-row fc-week fc-widget-content fc-rigid" style="height: 170px;"><div class="fc-bg"><table class=""><tbody><tr><td class="fc-day fc-widget-content fc-sun fc-future" data-date="2023-01-15"></td><td class="fc-day fc-widget-content fc-mon fc-future" data-date="2023-01-16"></td><td class="fc-day fc-widget-content fc-tue fc-future" data-date="2023-01-17"></td><td class="fc-day fc-widget-content fc-wed fc-future" data-date="2023-01-18"></td><td class="fc-day fc-widget-content fc-thu fc-future" data-date="2023-01-19"></td><td class="fc-day fc-widget-content fc-fri fc-future" data-date="2023-01-20"></td><td class="fc-day fc-widget-content fc-sat fc-future" data-date="2023-01-21"></td></tr></tbody></table></div><div class="fc-content-skeleton"><table><thead><tr><td class="fc-day-top fc-sun fc-future" data-date="2023-01-15"><a class="fc-day-number" data-goto="{&quot;date&quot;:&quot;2023-01-15&quot;,&quot;type&quot;:&quot;day&quot;}">15</a></td><td class="fc-day-top fc-mon fc-future" data-date="2023-01-16"><a class="fc-day-number" data-goto="{&quot;date&quot;:&quot;2023-01-16&quot;,&quot;type&quot;:&quot;day&quot;}">16</a></td><td class="fc-day-top fc-tue fc-future" data-date="2023-01-17"><a class="fc-day-number" data-goto="{&quot;date&quot;:&quot;2023-01-17&quot;,&quot;type&quot;:&quot;day&quot;}">17</a></td><td class="fc-day-top fc-wed fc-future" data-date="2023-01-18"><a class="fc-day-number" data-goto="{&quot;date&quot;:&quot;2023-01-18&quot;,&quot;type&quot;:&quot;day&quot;}">18</a></td><td class="fc-day-top fc-thu fc-future" data-date="2023-01-19"><a class="fc-day-number" data-goto="{&quot;date&quot;:&quot;2023-01-19&quot;,&quot;type&quot;:&quot;day&quot;}">19</a></td><td class="fc-day-top fc-fri fc-future" data-date="2023-01-20"><a class="fc-day-number" data-goto="{&quot;date&quot;:&quot;2023-01-20&quot;,&quot;type&quot;:&quot;day&quot;}">20</a></td><td class="fc-day-top fc-sat fc-future" data-date="2023-01-21"><a class="fc-day-number" data-goto="{&quot;date&quot;:&quot;2023-01-21&quot;,&quot;type&quot;:&quot;day&quot;}">21</a></td></tr></thead><tbody><tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr></tbody></table></div></div><div class="fc-row fc-week fc-widget-content fc-rigid" style="height: 170px;"><div class="fc-bg"><table class=""><tbody><tr><td class="fc-day fc-widget-content fc-sun fc-future" data-date="2023-01-22"></td><td class="fc-day fc-widget-content fc-mon fc-future" data-date="2023-01-23"></td><td class="fc-day fc-widget-content fc-tue fc-future" data-date="2023-01-24"></td><td class="fc-day fc-widget-content fc-wed fc-future" data-date="2023-01-25"></td><td class="fc-day fc-widget-content fc-thu fc-future" data-date="2023-01-26"></td><td class="fc-day fc-widget-content fc-fri fc-future" data-date="2023-01-27"></td><td class="fc-day fc-widget-content fc-sat fc-future" data-date="2023-01-28"></td></tr></tbody></table></div><div class="fc-content-skeleton"><table><thead><tr><td class="fc-day-top fc-sun fc-future" data-date="2023-01-22"><a class="fc-day-number" data-goto="{&quot;date&quot;:&quot;2023-01-22&quot;,&quot;type&quot;:&quot;day&quot;}">22</a></td><td class="fc-day-top fc-mon fc-future" data-date="2023-01-23"><a class="fc-day-number" data-goto="{&quot;date&quot;:&quot;2023-01-23&quot;,&quot;type&quot;:&quot;day&quot;}">23</a></td><td class="fc-day-top fc-tue fc-future" data-date="2023-01-24"><a class="fc-day-number" data-goto="{&quot;date&quot;:&quot;2023-01-24&quot;,&quot;type&quot;:&quot;day&quot;}">24</a></td><td class="fc-day-top fc-wed fc-future" data-date="2023-01-25"><a class="fc-day-number" data-goto="{&quot;date&quot;:&quot;2023-01-25&quot;,&quot;type&quot;:&quot;day&quot;}">25</a></td><td class="fc-day-top fc-thu fc-future" data-date="2023-01-26"><a class="fc-day-number" data-goto="{&quot;date&quot;:&quot;2023-01-26&quot;,&quot;type&quot;:&quot;day&quot;}">26</a></td><td class="fc-day-top fc-fri fc-future" data-date="2023-01-27"><a class="fc-day-number" data-goto="{&quot;date&quot;:&quot;2023-01-27&quot;,&quot;type&quot;:&quot;day&quot;}">27</a></td><td class="fc-day-top fc-sat fc-future" data-date="2023-01-28"><a class="fc-day-number" data-goto="{&quot;date&quot;:&quot;2023-01-28&quot;,&quot;type&quot;:&quot;day&quot;}">28</a></td></tr></thead><tbody><tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr></tbody></table></div></div><div class="fc-row fc-week fc-widget-content fc-rigid" style="height: 170px;"><div class="fc-bg"><table class=""><tbody><tr><td class="fc-day fc-widget-content fc-sun fc-future" data-date="2023-01-29"></td><td class="fc-day fc-widget-content fc-mon fc-future" data-date="2023-01-30"></td><td class="fc-day fc-widget-content fc-tue fc-future" data-date="2023-01-31"></td><td class="fc-day fc-widget-content fc-wed fc-other-month fc-future" data-date="2023-02-01"></td><td class="fc-day fc-widget-content fc-thu fc-other-month fc-future" data-date="2023-02-02"></td><td class="fc-day fc-widget-content fc-fri fc-other-month fc-future" data-date="2023-02-03"></td><td class="fc-day fc-widget-content fc-sat fc-other-month fc-future" data-date="2023-02-04"></td></tr></tbody></table></div><div class="fc-content-skeleton"><table><thead><tr><td class="fc-day-top fc-sun fc-future" data-date="2023-01-29"><a class="fc-day-number" data-goto="{&quot;date&quot;:&quot;2023-01-29&quot;,&quot;type&quot;:&quot;day&quot;}">29</a></td><td class="fc-day-top fc-mon fc-future" data-date="2023-01-30"><a class="fc-day-number" data-goto="{&quot;date&quot;:&quot;2023-01-30&quot;,&quot;type&quot;:&quot;day&quot;}">30</a></td><td class="fc-day-top fc-tue fc-future" data-date="2023-01-31"><a class="fc-day-number" data-goto="{&quot;date&quot;:&quot;2023-01-31&quot;,&quot;type&quot;:&quot;day&quot;}">31</a></td><td class="fc-day-top fc-wed fc-other-month fc-future" data-date="2023-02-01"><a class="fc-day-number" data-goto="{&quot;date&quot;:&quot;2023-02-01&quot;,&quot;type&quot;:&quot;day&quot;}">1</a></td><td class="fc-day-top fc-thu fc-other-month fc-future" data-date="2023-02-02"><a class="fc-day-number" data-goto="{&quot;date&quot;:&quot;2023-02-02&quot;,&quot;type&quot;:&quot;day&quot;}">2</a></td><td class="fc-day-top fc-fri fc-other-month fc-future" data-date="2023-02-03"><a class="fc-day-number" data-goto="{&quot;date&quot;:&quot;2023-02-03&quot;,&quot;type&quot;:&quot;day&quot;}">3</a></td><td class="fc-day-top fc-sat fc-other-month fc-future" data-date="2023-02-04"><a class="fc-day-number" data-goto="{&quot;date&quot;:&quot;2023-02-04&quot;,&quot;type&quot;:&quot;day&quot;}">4</a></td></tr></thead><tbody><tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr></tbody></table></div></div><div class="fc-row fc-week fc-widget-content fc-rigid" style="height: 170px;"><div class="fc-bg"><table class=""><tbody><tr><td class="fc-day fc-widget-content fc-sun fc-other-month fc-future" data-date="2023-02-05"></td><td class="fc-day fc-widget-content fc-mon fc-other-month fc-future" data-date="2023-02-06"></td><td class="fc-day fc-widget-content fc-tue fc-other-month fc-future" data-date="2023-02-07"></td><td class="fc-day fc-widget-content fc-wed fc-other-month fc-future" data-date="2023-02-08"></td><td class="fc-day fc-widget-content fc-thu fc-other-month fc-future" data-date="2023-02-09"></td><td class="fc-day fc-widget-content fc-fri fc-other-month fc-future" data-date="2023-02-10"></td><td class="fc-day fc-widget-content fc-sat fc-other-month fc-future" data-date="2023-02-11"></td></tr></tbody></table></div><div class="fc-content-skeleton"><table><thead><tr><td class="fc-day-top fc-sun fc-other-month fc-future" data-date="2023-02-05"><a class="fc-day-number" data-goto="{&quot;date&quot;:&quot;2023-02-05&quot;,&quot;type&quot;:&quot;day&quot;}">5</a></td><td class="fc-day-top fc-mon fc-other-month fc-future" data-date="2023-02-06"><a class="fc-day-number" data-goto="{&quot;date&quot;:&quot;2023-02-06&quot;,&quot;type&quot;:&quot;day&quot;}">6</a></td><td class="fc-day-top fc-tue fc-other-month fc-future" data-date="2023-02-07"><a class="fc-day-number" data-goto="{&quot;date&quot;:&quot;2023-02-07&quot;,&quot;type&quot;:&quot;day&quot;}">7</a></td><td class="fc-day-top fc-wed fc-other-month fc-future" data-date="2023-02-08"><a class="fc-day-number" data-goto="{&quot;date&quot;:&quot;2023-02-08&quot;,&quot;type&quot;:&quot;day&quot;}">8</a></td><td class="fc-day-top fc-thu fc-other-month fc-future" data-date="2023-02-09"><a class="fc-day-number" data-goto="{&quot;date&quot;:&quot;2023-02-09&quot;,&quot;type&quot;:&quot;day&quot;}">9</a></td><td class="fc-day-top fc-fri fc-other-month fc-future" data-date="2023-02-10"><a class="fc-day-number" data-goto="{&quot;date&quot;:&quot;2023-02-10&quot;,&quot;type&quot;:&quot;day&quot;}">10</a></td><td class="fc-day-top fc-sat fc-other-month fc-future" data-date="2023-02-11"><a class="fc-day-number" data-goto="{&quot;date&quot;:&quot;2023-02-11&quot;,&quot;type&quot;:&quot;day&quot;}">11</a></td></tr></thead><tbody><tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr></tbody></table></div></div></div></div></td></tr></tbody></table></div></div></div>
+        </div>
+    </div>
+
+</div>

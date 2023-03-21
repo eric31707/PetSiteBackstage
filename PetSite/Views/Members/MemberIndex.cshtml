@@ -1,0 +1,83 @@
+﻿@section Styles
+	{
+
+	<link href="~/lib/datatables/css/jquery.datatables.min.css" rel="stylesheet" />
+	<style>
+		thead {
+			background-color: darkslateblue;
+			color: white;
+		}
+	</style>
+}
+<p></p>
+<table class="table table-hover table-striped m-3 p-2">
+	<thead >
+		<tr>
+			<td>會員ID</td>
+			<td>姓名</td>
+			<td>帳號</td>
+			<td>手機</td>
+			<td>Email</td>
+			<td>生日</td>
+			<td>地址</td>
+			<td>驗證狀態</td>
+			<td>驗證碼</td>
+			<td>按鈕</td>
+		</tr>
+	</thead>
+
+</table>
+
+@section Scripts
+	{
+	<script src="~/lib/datatables/js/jquery.datatables.min.js"></script>
+	<script src="https://cdn.datatables.net/fixedheader/3.3.1/js/dataTables.fixedHeader.min.js"></script>
+	<script>
+		
+		function EditData(data) {
+			location.href = "/Members/Edit/" + data;
+		}
+
+
+		$(document).ready(function () {
+			$("table").dataTable({
+				ajax: {
+					type: "POST",
+					url: "/Members/Members/Json",
+					dataSrc: function (json) {
+						return json;
+					}
+				},
+				columns: [
+					{ "data": "memberId", "width": "7%" },
+					{ "data": "name", "width": "10%" },
+					{ "data": "account", "width": "10%" },
+					{ "data": "mobile", "width": "10%" },
+					{ "data": "email", "width": "13%" },
+					{ "data": "birthDate", "width": "10%" },
+					{ "data": "address", "width": "15%" },
+					{ "data": "isConfirmed", "width": "10%" },
+					{ "data": "confirmCode", "width": "10%" },
+					{
+						//這裡的data變數值為sysid，相等於row.sysid
+						data: "memberId",//資料行繫結屬性
+						"width": "5%",
+						orderable: false, // 禁用排序
+						render: function (data, type, row, meta) {
+							//row為後端回傳的資料列物件、data變數相等於row.sysid，row可以抓到哪些資料行取決於後端的回傳
+							return "<input type='button' class='btn btn-primary mb-1' onclick='EditData(" + data + ")'  value='編輯' /> ";
+
+						}
+					}
+
+				],
+				fixedHeader: {
+					header: false
+				},
+				language: {
+					url: "https://cdn.datatables.net/plug-ins/1.13.1/i18n/zh-HANT.json"
+				}
+			});
+		})
+	</script>
+}

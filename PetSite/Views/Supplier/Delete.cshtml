@@ -1,0 +1,55 @@
+﻿@model PetSite.Models.ViewModels.SupplierCreateVM
+
+<div>
+    <h4 class="mt-2">供應商資料</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.SupplierName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.SupplierName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Mobile)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Mobile)
+        </dd>
+    </dl>
+
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        刪除
+    </button>
+    <a asp-action="Index" class="btn btn-secondary">返回</a>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-2" id="exampleModalLabel">你確定要刪除嗎？</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        <span class="me-1">@Html.DisplayNameFor(model => model.SupplierName)：</span>
+                        <span>@Html.DisplayFor(model => model.SupplierName)</span>
+                    </p>
+                    <p>
+                        <span class="me-1">@Html.DisplayNameFor(model => model.Mobile)：</span>
+                        <span>@Html.DisplayFor(model => model.Mobile)</span>
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <form asp-action="Delete">
+                        <input type="hidden" asp-for="Id" />
+                        <input type="submit" value="確認刪除" class="btn btn-danger" /> |
+                    </form>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

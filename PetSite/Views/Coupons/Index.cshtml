@@ -1,0 +1,199 @@
+﻿@*@model IEnumerable<PetSite.Models.EFModels.Coupon>*@
+@*@model IEnumerable<PetSite.Models.DTOs.CouponDTO>*@
+@using PetSite.Models.DTOs
+@using X.PagedList.Mvc.Core.Fluent
+@using X.PagedList
+@using X.PagedList.Mvc.Core;
+@using X.PagedList.Web.Common;
+@model X.PagedList.IPagedList<CouponDTO>
+
+@{
+	ViewData["Title"] = "折價券管理";
+	var discountName = ViewBag.DiscountName as string;
+	var pagedList = (IPagedList)ViewBag.PagedData;
+}
+@*<link href="~/lib/datatables/js/jquery.datatables.min.js" />
+
+<script src="https://cdn.datatables.net/fixedheader/3.3.1/js/dataTables.fixedHeader.min.js"></script>
+<script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+
+*@
+
+
+<form class="card mt-5 " method="get">
+	<div class="row h-100 container">
+		<div class="col-5 ">
+			<h5 class="card-header float-right">所有折價券</h5>
+		</div>
+		<div class="col-1 mt-4">
+			<h6>折價券名稱:</h6>
+		</div>
+		<div class="col-3 mt-3">			
+			<input type="text" name="discountName" class="form-control" value="@discountName">			
+		</div>
+		<div class="col-2 mt-3">
+			<input type="submit" class="btn btn-primary" value="Search" />
+		</div>
+		<div class="col-1 mt-3 ">
+
+			<button type="button" class="btn btn-outline-primary me-auto"><a asp-action="Create">新增</a></button>
+
+		</div>
+	</div>
+	<div class="table-responsive text-striped">
+		<table class="table table-striped dataTables_wrapper  no-footer">
+			<thead>
+				<tr>
+					<th class="">
+						<span>折扣碼</span>
+						@*@Html.DisplayNameFor(model => model.DiscountCode)*@
+					</th>
+					<th>
+						<span>折扣名稱</span>
+						@*@Html.DisplayNameFor(model => model.DiscountName)*@
+					</th>
+					<th>
+						<span>滿額</span>
+						@*@Html.DisplayNameFor(model => model.Conditions)*@
+					</th>
+					<th>
+						<span>折扣金</span>
+						@*@Html.DisplayNameFor(model => model.DiscountAmount)*@
+					</th>
+					<th>
+						<span>折扣使用者</span>
+						@*@Html.DisplayNameFor(model => model.UserType)*@
+					</th>
+					<th>
+						<span>折扣起始日期</span>
+						@*@Html.DisplayNameFor(model => model.StartDate)*@
+					</th>
+					<th>
+						<span>折扣結束日期</span>
+						@*@Html.DisplayNameFor(model => model.EndDate)*@
+					</th>
+					<th>
+						<span>數量</span>
+						@*@Html.DisplayNameFor(model => model.Qty)*@
+					</th>
+					<th>
+						<span>啟用</span>
+						@*@Html.DisplayNameFor(model => model.Status)*@
+					</th>
+					<th>
+						<span>異動</span>
+					</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var item in Model)
+				{
+					<tr>
+						<td>
+							@Html.DisplayFor(modelItem => item.DiscountCode)
+						</td>
+						<td>
+							@Html.DisplayFor(modelItem => item.DiscountName)
+						</td>
+
+						<td>
+							@Html.DisplayFor(modelItem => item.Conditions)
+						</td>
+						<td>
+							@Html.DisplayFor(modelItem => item.DiscountAmount)
+						</td>
+						<td>
+							@Html.DisplayFor(modelItem => item.UserType)
+						</td>
+						<td>
+							@Html.DisplayFor(modelItem => item.StartDate)
+						</td>
+						<td>
+							@Html.DisplayFor(modelItem => item.EndDate)
+						</td>
+						<td>
+							@Html.DisplayFor(modelItem => item.Qty)
+						</td>
+						<td>
+							@Html.DisplayFor(modelItem => item.Status)
+						</td>
+						<td>
+							<div class="dropdown">
+						<button id="dropdownMenuButton1" type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown" aria-haspopup="true" aspopup aria-expanded="false">
+						<i class="bx bx-dots-vertical-rounded"></i>
+						</button>
+						<div class="dropdown-menu dropdown-menu-end" style="" aria-labelledby="dropdownMenuButton1">
+						<a class="dropdown-item"  asp-action="Edit" asp-route-id="@item.CouponId">
+						<i class="bx bx-edit-alt me-1"></i> Edit
+						</a>
+						<a class="dropdown-item"  asp-action="Delete" asp-route-id="@item.CouponId">
+						<i class="bx bx-trash me-1"></i>Delete
+						</a>
+						</div>
+						</div>
+
+
+						</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	</div>
+</form>
+
+
+<div class="demo-inline-spacing">
+	<!-- Basic Pagination -->
+	<nav aria-label="Page navigation">
+		<ul class="pagination" id="testlist2">
+			
+		</ul>
+	</nav>
+	<!--/ Basic Pagination -->
+</div>
+
+<script>
+	
+	//var elm = document.querySelector("#testlist2");
+	//var pagelen = @(pagedList.PageCount);
+	//var str="";
+	//for (var i=1; i<=pagelen ; i++){
+	//	var content = `<li class="page-item "><a class="page-link" href="/Coupons?pageNumber=${i}">${i}</a></li>`;
+	//	str+=content;
+	//}
+	//var pagestr=`
+	//<li class="page-item first">
+	//			<a class="page-link" href="/Coupons?pageNumber=1"><i class="tf-icon bx bx-chevrons-left"></i></a>
+	//		</li>
+	//		<li class="page-item prev " >
+	//			<a class="page-link" href="/Coupons?pageNumber=@(pagedList.PageNumber-1<1? 1:pagedList.PageNumber-1)"><i class="tf-icon bx bx-chevron-left"></i></a>
+	//		</li>
+	//		${str}
+	//<li class="page-item next">
+	//			<a class="page-link" href="/Coupons?pageNumber=@(pagedList.PageNumber+1>pagedList.PageCount? pagedList.PageCount:pagedList.PageNumber+1)"><i class="tf-icon bx bx-chevron-right"></i></a>
+	//		</li>
+	//		<li class="page-item last">
+	//			<a class="page-link" href="/Coupons?pageNumber=@(pagedList.PageCount)"><i class="tf-icon bx bx-chevrons-right"></i></a>
+	//		</li>
+	//`;
+	//elm.innerHTML = pagestr;
+
+</script>
+@Html.PagedListPager(Model, page => Url.Action("Index", new { pageNumber=page }), new PagedListRenderOptions
+               {
+                        DisplayLinkToIndividualPages = true,
+                        DisplayPageCountAndCurrentLocation = false,
+                        MaximumPageNumbersToDisplay = 10,
+                        LiElementClasses = new string[] { "page-item" },
+                   PageClasses = new string[] { "page-link" },
+
+                    })
+第 @(pagedList.PageCount < pagedList.PageNumber ? 0 : pagedList.PageNumber) 頁，共 @pagedList.PageCount 頁。
+每頁 @pagedList.PageSize 筆資料，全部共有 @pagedList.TotalItemCount 筆資料。
+@*@(Html.Pager(Model)
+	.Url(page => Url.Action("Index", new { pageNumber = page, DiscountName = ViewBag.DiscountName }))
+	.ClassicPlusFirstAndLast())*@
+
+
+<script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>

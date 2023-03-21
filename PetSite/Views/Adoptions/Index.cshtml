@@ -1,0 +1,167 @@
+﻿@model IEnumerable<PetSite.Models.EFModels.Adoption>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.AdoptName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AnimalColor)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AreaAddress)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AdoptTitle)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AdoptDescription)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Image1)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Image2)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Image3)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Image4)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Image5)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ContainNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OpenAdopt)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ligation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Deworming)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Vaccination)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Triple)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AnimalChip)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Fiv)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FeLv)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AnimalGender)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AnimalSize)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AnimalType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Member)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.AdoptName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AnimalColor)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AreaAddress)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AdoptTitle)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AdoptDescription)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Image1)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Image2)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Image3)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Image4)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Image5)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ContainNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OpenAdopt)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Ligation)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Deworming)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Vaccination)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Triple)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AnimalChip)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Fiv)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FeLv)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AnimalGender.GenderType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AnimalSize.AnimalSize1)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AnimalType.AnimailType1)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Member.Account)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.AdoptionId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.AdoptionId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.AdoptionId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

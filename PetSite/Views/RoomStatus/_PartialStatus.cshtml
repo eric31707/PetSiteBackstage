@@ -1,0 +1,33 @@
+﻿@model PetSite.Models.ViewModels.RoomOrderDetailVM
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "";
+}
+
+
+<div class="mb-3">
+    <label for="exampleFormControlInput1" class="form-label">房間編號</label>
+    <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="@Html.DisplayFor(model => model.RoomId)" readonly>
+</div>
+<div class="mb-3">
+    <label for="exampleFormControlInput1" class="form-label">入住日期</label>
+    <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="@Html.DisplayFor(model => model.StartDate)" readonly>
+</div>
+<div class="mb-3">
+    <label for="exampleFormControlInput1" class="form-label">退房日期</label>
+    <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="@Html.DisplayFor(model => model.EndDate)" readonly>
+</div>
+<div class="mb-3">
+    <label for="exampleFormControlInput1" class="form-label">訂房者</label>
+    <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="@Html.DisplayFor(model => model.MemberName)" readonly>
+</div>
+<div class="mb-3">
+    <label for="exampleFormControlInput1" class="form-label">價格</label>
+    <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="@Html.DisplayFor(model => model.TotalPrice)" readonly>
+</div>
+<div class="mb-3">
+    <label for="exampleFormControlInput1" class="form-label">訂房時間</label>
+    <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="@Html.DisplayFor(model => model.OrderDate)" readonly>
+</div>

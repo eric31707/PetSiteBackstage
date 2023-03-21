@@ -1,0 +1,144 @@
+﻿@model IEnumerable<PetSite.Models.ViewModels.TagMemberListVM>
+
+
+
+
+<div class="input-group input-group-merge mt-3 w-25">
+	<span class="input-group-text" id="basic-addon-search31"><i class="bx bx-search"></i></span>
+	<input type="text"
+		   class="form-control"
+		   id="search"
+		   placeholder="Search..."
+		   aria-label="Search..."
+		   aria-describedby="basic-addon-search31" />
+</div>
+
+<div class="card mt-4">
+	<h5 class="card-header">會員列表</h5>
+	<div class="table-responsive text-nowrap">
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>
+						<input type="checkbox" class="checkAll" />
+					</th>
+					<th>
+						會員編號
+					</th>
+					<th>
+						名字
+					</th>
+					<th>
+						帳號
+					</th>
+					<th>
+						生日
+					</th>
+					<th>
+						地址
+					</th>
+					<th>
+						驗證狀態
+					</th>
+
+				</tr>
+			</thead>
+			<tbody class="table-border-bottom-0">
+				@foreach (var item in Model)
+				{
+					<tr class="search">
+						<td>
+							<input class="check" type="checkbox" checked="@item.IsInTag" data-id="@item.MemberId" data-membertagid="@item.MemberTagId">
+						</td>
+						<td>
+							@Html.DisplayFor(modelItem => item.MemberId)
+						</td>
+						<td>
+							@Html.DisplayFor(modelItem => item.Name)
+						</td>
+						<td>
+							@Html.DisplayFor(modelItem => item.Account)
+						</td>
+						<td>
+							@Html.DisplayFor(modelItem => item.BirthDate)
+						</td>
+						<td>
+							@Html.DisplayFor(modelItem => item.Address)
+						</td>
+						<td>
+							@Html.DisplayFor(modelItem => item.IsConfirmed)
+						</td>
+
+					</tr>
+				}
+			</tbody>
+
+		</table>
+	</div>
+</div>
+<input type="button" id="Edit" value="編輯" class="btn btn-primary mt-3 ms-3" />
+<a href="/Tags/Index"><input type="button" id="Back" value="返回" class="btn btn-primary ms-3 mt-3" /></a>
+
+
+@section Scripts {
+	@{
+		await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	}
+	<script>
+
+
+
+		$(".checkAll").click(function () {
+			if ($(".checkAll").prop("checked")) {//如果全選按鈕有被選擇的話（被選擇是true）
+				$(".check").prop("checked", true);//把所有的核取方框的變成勾選
+			} else {
+				$(".check").prop("checked", false);//把所有的核取方框都取消勾選
+			}
+		})
+
+		var arry = [];
+		$("#Edit").on("click", function () {
+			$(".check").each(function () {
+				arry.push({ "IsChecked": $(this).is(":checked"), "MemberId": $(this).data("id"), "MemberTagId": $(this).data("membertagid") })
+			})
+			$.ajax({
+				type: "POST",
+				url: `/MemberTags/EditCheckedMember`,
+				data: JSON.stringify(arry),
+				contentType: "application/json"
+			}).done(function (data) {
+				alert(data);
+				location.reload();
+			}).fail(function (err) {
+				alert(err.statusText);
+			})
+		});
+		
+		$(document).ready(function(){
+			function Contains(text_one,Text_two){
+				if (text_one.indexOf(Text_two) !=-1)
+				return true
+			}
+			$("#search").keyup(function(){
+			var searchText = $("#search").val();
+			$(".search").each(function(){
+				if(!Contains($(this).text(),searchText))
+				{
+					$(this).hide();
+				}else{
+				$(this).show();
+				}
+			})
+			})
+		})
+
+		//$("#search").on("onkeyup",function(){
+		//var searchString = $("#search").value;
+		//$.ajax({
+		//}).done
+		//})
+
+
+
+	</script>
+}

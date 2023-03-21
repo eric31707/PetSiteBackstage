@@ -1,0 +1,24 @@
+﻿@model PetSite.Models.EFModels.Tag
+
+@{
+    ViewData["Title"] = "Delete";
+}
+<br />
+<h3>您確定要刪除此標籤嗎?</h3>
+<div>
+    
+   <br/>
+    <div class="mb-4 badge  h-px-30 w-px-100" style="font-size:16px;color:black">
+            @Html.DisplayNameFor(model => model.TagName) :
+	</div>
+       <div class="badge rounded-pill bg-info lg h-px-30 w-auto "style="font-size:16px" >
+            @Html.DisplayFor(model => model.TagName)
+	</div>
+   
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="TagId" />
+        <input type="submit" value="Delete" class="btn btn-danger ms-3 mt-3" />
+        <a asp-action="Index"><input type="button" value="返回" class="btn btn-primary ms-3 mt-3"/></a>
+    </form>
+</div>

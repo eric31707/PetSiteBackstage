@@ -1,0 +1,122 @@
+﻿@model PetSite.Models.ViewModels.PurchaseItemEditVM
+
+<div id="div">
+	@*<select asp-items="ViewBag.List[0]"></select>
+	<select asp-items="ViewBag.List[1]"></select>*@
+	<form asp-action="Edit">
+		<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+		<input type="hidden" name="PurchaseId" value="@ViewBag.purchasesId" />
+		<label class="control-label">供應商</label>
+		<select class="" asp-for="SupplierName" asp-items="ViewBag.SupplierId"></select>
+		<table class="table">
+			<thead>
+				<tr>
+					<th>產品</th>
+					<th>大小</th>
+					<th>顏色</th>
+					<th>口味</th>
+					<th>價格</th>
+					<th>數量</th>
+				</tr>
+			</thead>
+			<tbody>
+				@for (int i = 0; i < @ViewBag.index; i++)
+				{
+					<tr>
+						<input type="hidden" name="id" value="@ViewBag.purchasesItemId[i]" />
+						<td><select class="form-select" name="ProductName" asp-items="ViewBag.ProductBag[i]"></select></td>
+						<td><select class="form-select" name="Size" asp-items="ViewBag.SizeBag[i]"></select></td>
+						<td><select class="form-select" name="Color" asp-items="ViewBag.ColorBag[i]"></select></td>
+						<td><select class="form-select" name="Flavor" asp-items="ViewBag.FlavorBag[i]"></select></td>
+						<td><input class="form-control" asp-for="Price" required="required" value="@ViewBag.PriceBag[i]" /></td>
+						<td><input class="form-control" asp-for="Qty" required="required" value="@ViewBag.QtyBag[i]" /></td>
+						<td><button id="@ViewBag.deleteButtonId[i]" type="button" class="btn btn-danger">刪除表格</button></td>
+					</tr>
+				}
+			</tbody>
+		</table>
+		<input type="submit" value="Create" class="form-group my-1 btn btn-primary" />
+		<a asp-action="Index" class="btn btn-secondary">返回</a>
+		<button id="Add" type="button" class="btn btn-success">新增表格</button>
+
+	</form>
+</div>
+@section Scripts {
+	<script>
+		@Model
+			let index = @ViewBag.index + 1;
+		console.log(index);
+		console.log(document.querySelector("#divv"))
+
+		for (let i = 1; i <= index - 1; i++) {
+			let deleteButtonId = document.querySelector(`#Delete${i}`)
+			let deleteParentnode = document.querySelector(`#Delete${i}`).parentNode.parentNode;
+			console.log(document.querySelector(`#Delete${i}`).parentNode.parentNode);
+			deleteButtonId.addEventListener("click", function () {
+				deleteParentnode.remove();
+			});
+
+		}
+		let dataProduct;
+		//拿產品資料
+		$.ajax({
+			type: "POST",
+			url: "https://localhost:7246/Purchases/Test/Json",
+		}).done(function (data) {
+			dataProduct = JSON.parse(JSON.stringify(data));
+			console.log(dataProduct);
+			console.log(dataProduct.colorItem[0].colorId);
+			console.log(dataProduct.productItem[0].name);
+		}).fail(function (err) {
+			alert(err.statusText);
+		});
+		//抓新增按鈕選擇器
+		const buttonAdd = document.querySelector("#Add");
+		buttonAdd.addEventListener("click", function () {
+			console.log(123);
+			let a = document.querySelector("table tbody");
+			let addth = document.createElement('tr');
+			//新增productOptionHtml
+			let productOptionHtml = `<input type="hidden" name="id" value="0" /><td><select class="form-select" name="ProductName">`
+			for (let i = 0; i < dataProduct.productItem.length; i++) {
+				productOptionHtml += `<option>${dataProduct.productItem[i].name}</option>`;
+			}
+			productOptionHtml += `</select></td>`;
+			//新增sizeOptionHtml
+			productOptionHtml += `<td><select class="form-select" name="Size" >`;
+			for (let i = 0; i < dataProduct.sizeItem.length; i++) {
+				productOptionHtml += `<option Value="${dataProduct.sizeItem[i].sizeId}">${dataProduct.sizeItem[i].name}</option>`;
+			}
+			productOptionHtml += `</select></td>`;
+			//新增colorOptionHtml
+			productOptionHtml += `<td><select class="form-select" name="Color">`;
+			for (let i = 0; i < dataProduct.colorItem.length; i++) {
+				productOptionHtml += `<option Value="${dataProduct.colorItem[i].colorId}">${dataProduct.colorItem[i].name}</option>`;
+			}
+			productOptionHtml += `</select></td>`;
+			//新增flavorOptionHtml
+			productOptionHtml += `<td><select class="form-select" name="Flavor">`;
+			for (let i = 0; i < dataProduct.flavorItem.length; i++) {
+				productOptionHtml += `<option Value="${dataProduct.flavorItem[i].flavorId}">${dataProduct.flavorItem[i].name}</option>`;
+			}
+			productOptionHtml += `</select></td>`;
+			//新增最後按鈕
+			productOptionHtml += `<td><input class="form-control" name="Price" required="required"/></td>
+																	<td><input class="form-control" name="Qty" required="required"/></td>
+																	<td><button id=Delete${index} type="button" class="btn btn-danger">刪除表格</button></td>`;
+			addth.innerHTML = productOptionHtml;
+			a.prepend(addth);
+			console.log(document.querySelector("table tbody"));
+			let deletebutton = document.querySelector(`#Delete${index}`);
+			let tr = document.querySelector('table tbody tr');
+			//刪除按鈕增加事件
+			deletebutton.addEventListener("click", function () {
+				tr.remove();
+			});
+			index++;
+		});
+
+
+
+	</script>
+}

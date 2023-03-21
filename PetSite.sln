@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33205.214
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PetSite", "PetSite\PetSite.csproj", "{9E06A742-0136-4F3E-9EDE-DF4CFAC9847D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "方案項目", "方案項目", "{676BB697-C540-4CFD-9174-3C226DB377AB}"
+	ProjectSection(SolutionItems) = preProject
+		ReadMe.txt = ReadMe.txt
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9E06A742-0136-4F3E-9EDE-DF4CFAC9847D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E06A742-0136-4F3E-9EDE-DF4CFAC9847D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E06A742-0136-4F3E-9EDE-DF4CFAC9847D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E06A742-0136-4F3E-9EDE-DF4CFAC9847D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3816E01E-A283-4FC2-992D-E9B1FC7101E0}
+	EndGlobalSection
+EndGlobal

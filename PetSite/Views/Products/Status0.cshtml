@@ -1,0 +1,74 @@
+﻿@model List<PetSite.Models.VM.ProductVM>
+@{
+	ViewData["Title"] = "Index";
+}
+
+<h1>未上架商品</h1>
+
+<table class="table">
+	<thead>
+		<tr>
+			<th>商品名稱</th>
+			<th>價格</th>
+			<th>介紹</th>
+			<th>狀態</th>
+			<th>數量</th>
+			<th>分類名稱</th>
+			<th>顏色</th>
+			<th>口味</th>
+			<th>尺寸</th>
+			<th>物種</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model)
+		{
+				<tr>
+					<td>
+					@Html.DisplayFor(modelItem => item.Name)
+					</td>
+					<td>
+					@Html.DisplayFor(modelItem => item.Price)
+					</td>
+					<td>
+					@Html.DisplayFor(modelItem => item.Description)
+					</td>
+					<td>
+					@Html.DisplayFor(modelItem => item.Status)
+					</td>
+					<td>
+					@Html.DisplayFor(modelItem => item.Quantity)
+					</td>
+					<td>
+					@Html.DisplayFor(modelItem => item.Category.Name)
+					</td>
+					<td>
+					@Html.DisplayFor(modelItem => item.Color.Name)
+					</td>
+					<td>
+					@Html.DisplayFor(modelItem => item.Flavor.Name)
+					</td>
+					<td>
+					@Html.DisplayFor(modelItem => item.Size.Name)
+					</td>
+					<td>
+					@Html.DisplayFor(modelItem => item.Species.Name)
+					</td>
+					<td>
+					@foreach (var n in item.ImageName)
+					{
+						<img src="~/ProductImages/@n" style="width:70px;height:100px;">
+					}
+					</td>
+					<td>
+					@using (@Html.BeginForm("UpdateStatusTo1", "Products", FormMethod.Post))
+					{
+						@Html.Hidden("id",item.Id)
+
+						<input type="submit" value="上架" class="btn btn-default"style="background-color:orange"/>
+					}
+					</td>
+				</tr>
+		}
+	</tbody>
+</table>

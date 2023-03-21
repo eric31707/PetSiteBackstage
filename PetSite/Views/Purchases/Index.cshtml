@@ -1,0 +1,58 @@
+﻿@model IEnumerable<PetSite.Models.EFModels.Purchase>
+
+@{
+	ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+	<a asp-action="Test" class="btn btn-success">新增</a>
+</p>
+<table class="table">
+	<thead>
+		<tr>
+			<th>
+				@Html.DisplayNameFor(model => model.Status)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Total)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.CreateDate)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Supplier)
+			</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model)
+		{
+			<tr>
+				<td>
+					@Html.DisplayFor(modelItem => item.Status)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Total)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.CreateDate)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Supplier.SupplierName)
+				</td>
+				<td id="abc">
+					<a asp-action="Edit" asp-route-id="@item.PurchaseId" class="btn btn-primary">編輯</a> |
+					<a asp-action="Delete" asp-route-id="@item.PurchaseId" class="btn btn-danger">刪除</a> |
+					<a asp-action="Storage" asp-route-id="@item.PurchaseId" class="btn btn-dark">入庫</a>
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>
+
+<script>
+	console.log(document.querySelector("#abc"));
+</script>

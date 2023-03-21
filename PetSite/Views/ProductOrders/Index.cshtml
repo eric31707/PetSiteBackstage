@@ -1,0 +1,113 @@
+﻿@using X.PagedList.Mvc.Core.Fluent;
+@*@model IEnumerable<PetSite.Models.ViewModels.POIndexVM>*@
+@model X.PagedList.IPagedList<PetSite.Models.ViewModels.POIndexVM>
+@using X.PagedList.Mvc.Core;
+@using X.PagedList.Web.Common;
+@{
+    ViewData["Title"] = "Index";
+    var selectOrderStatus = ViewBag.orderStatus as IEnumerable<SelectListItem>;
+    var selectPaymentStatus = ViewBag.paymentStatus as IEnumerable<SelectListItem>;
+    var selectShipmentStatus = ViewBag.shipmentStatus as IEnumerable<SelectListItem>;
+}
+<head>
+    <link rel="stylesheet" href="~/css/searchbar.css/">
+    <script defer src="~/js/searchbar.js"></script>
+
+</head>
+
+<h1>訂單管理</h1>
+
+<div class="row">
+    <div class="col-6">
+        <form asp-action="Index">
+            <div class="btn-group" role="group">
+                <button type="submit" class="btn btn-outline-primary">全部</button>
+                <button type="submit" class="btn btn-outline-primary" name="orderStatus" value="處理中">訂單處理中</button>
+                <button type="submit" class="btn btn-outline-primary" name="paymentStatus" value="未付款">未付款</button>
+                <button type="submit" class="btn btn-outline-primary" name="shipmentStatus" value="備貨中">備貨中</button>
+            </div>
+        </form>
+    </div>
+    //todo查詢
+   @* <div class="col-6">
+        <form class="d-flex" role="search" asp-action="Index">
+            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="searchItem">
+            <button class="btn btn-outline-success" type="submit" >Search</button>
+        </form>
+    </div>*@
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                訂單編號
+            </th>
+            <th>
+                日期
+            </th>
+            <th>
+                訂單狀態
+            </th>
+            <th>
+                付款狀態
+            </th>
+            <th>
+                運送狀態
+            </th>
+            <th>
+                訂購人
+            </th>
+            <th>
+                合計
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <a id="btn" asp-controller="ProductOrders" asp-action="PODetails" asp-route-id="@item.ProductOrderId">@Html.DisplayFor(modelItem => item.ProductOrderId)</a>
+
+                <td>
+                        @Html.DisplayFor(modelItem => item.CreateDate)
+                </td>
+                <td>
+                        @Html.DisplayFor(modelItem => item.OrderStatus)
+                </td>
+                <td>
+                        @Html.DisplayFor(modelItem => item.PaymentStatus)
+                </td>
+                <td>
+                        @Html.DisplayFor(modelItem => item.ShipmentStatus)
+                </td>
+                <td>
+                        @Html.DisplayFor(modelItem => item.Receiver)
+                </td>
+                <td>
+                        @Html.DisplayFor(modelItem => item.Total)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@Html.PagedListPager(Model, page => Url.Action("Index", new { pageNumber=page }), new PagedListRenderOptions
+               {
+                        DisplayLinkToIndividualPages = true,
+                        DisplayPageCountAndCurrentLocation = false,
+                        MaximumPageNumbersToDisplay = 10,
+                        LiElementClasses = new string[] { "page-item" },
+                   PageClasses = new string[] { "page-link" },
+
+                    })
+@section Scripts {
+    <script>
+       $(function () {
+    $(".input-group-btn .dropdown-menu li a").click(function () {
+        var selText = $(this).html();
+        $('.btn:first-child').html(selText+'<span class="caret"></span>');
+        $(this).parents(".input-group-btn").find(".btn-search").html(selText);
+    });
+});
+    </script>
+}
